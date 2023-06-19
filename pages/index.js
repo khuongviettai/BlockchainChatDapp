@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ChatAppContext } from "../Context/ChatAppContext";
 
-const ChapApp = () => {
-  return <div>ChapApp</div>;
+const ChatApp = () => {
+  const title = useContext(ChatAppContext);
+  return <div>{title}</div>;
 };
 
-export default ChapApp;
+export default ChatApp;
