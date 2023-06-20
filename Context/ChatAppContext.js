@@ -32,7 +32,7 @@ export const ChatAppProvider = ({ children }) => {
       setUserName(userName);
       const friendLists = await contract.getMyFriendList();
       setFriendLists(friendLists);
-      const userList = await contract.getAllAppUsers;
+      const userList = await contract.getAllAppUsers();
       setUserList(userList);
     } catch (error) {
       console.log(error);
@@ -41,7 +41,7 @@ export const ChatAppProvider = ({ children }) => {
 
   useEffect(() => {
     fetchData();
-  });
+  }, []);
 
   const readMessage = async (friendAddress) => {
     try {
@@ -55,8 +55,8 @@ export const ChatAppProvider = ({ children }) => {
 
   const createAccount = async ({ name, accountAddress }) => {
     try {
-      if (name || accountAddress)
-        return setError("Name and AccountAddress, cannot be emty");
+      if (!name || !accountAddress)
+        return setError("Name and AccountAddress cannot be empty");
       const contract = await connectingWithContract();
       const getCreatedUser = await contract.createAccount(name);
       setLoading(true);
@@ -70,7 +70,7 @@ export const ChatAppProvider = ({ children }) => {
 
   const addFriends = async () => {
     try {
-      if (name || accountAddress) return setError("Please provide data");
+      if (!name || !accountAddress) return setError("Please provide data");
 
       const contract = await connectingWithContract();
       const addMyFriend = await contract.addFriend(accountAddress, name);
@@ -86,7 +86,7 @@ export const ChatAppProvider = ({ children }) => {
 
   const sendMessage = async ({ msg, address }) => {
     try {
-      if (msg || address) return setError("Please type your Message");
+      if (!msg || !address) return setError("Please type your Message");
 
       const contract = await connectingWithContract();
       const addMessage = await contract.sendMessage(address, msg);
@@ -105,6 +105,7 @@ export const ChatAppProvider = ({ children }) => {
     setCurrentUserName(userName);
     setCurrentUserAddress(userAddress);
   };
+
   return (
     <ChatAppContext.Provider
       value={[
