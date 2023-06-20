@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import {
   CheckIfWalletConnected,
   connectWallet,
-  connectWithContract,
+  connectingWithContract,
 } from "@/Utils/apiFeature";
 
 export const ChatAppContext = React.createContext();
@@ -21,11 +21,11 @@ export const ChatAppProvider = ({ children }) => {
   const [currentUserName, setCurrentUserName] = useState("");
   const [currentUserAddress, setCurrentUserAddress] = useState("");
 
-  const routeer = useRouter();
+  const router = useRouter();
 
   const fetchData = async () => {
     try {
-      const contract = await connectWithContract();
+      const contract = await connectingWithContract();
       const connectAccount = await connectWallet();
       setAccount(connectAccount);
       const userName = await contract.getUsername(connectAccount);
@@ -45,7 +45,7 @@ export const ChatAppProvider = ({ children }) => {
 
   const readMessage = async (friendAddress) => {
     try {
-      const contract = await connectWithContract();
+      const contract = await connectingWithContract();
       const read = await contract.readMessage(friendAddress);
       setFriendMsg(read);
     } catch (error) {
@@ -57,7 +57,7 @@ export const ChatAppProvider = ({ children }) => {
     try {
       if (name || accountAddress)
         return setError("Name and AccountAddress, cannot be emty");
-      const contract = await connectWithContract();
+      const contract = await connectingWithContract();
       const getCreatedUser = await contract.createAccount(name);
       setLoading(true);
       await getCreatedUser.wait();
@@ -72,12 +72,12 @@ export const ChatAppProvider = ({ children }) => {
     try {
       if (name || accountAddress) return setError("Please provide data");
 
-      const contract = await connectWithContract();
+      const contract = await connectingWithContract();
       const addMyFriend = await contract.addFriend(accountAddress, name);
       setLoading(true);
       await addMyFriend.wait();
       setLoading(false);
-      Router.push("/");
+      router.push("/");
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -88,7 +88,7 @@ export const ChatAppProvider = ({ children }) => {
     try {
       if (msg || address) return setError("Please type your Message");
 
-      const contract = await connectWithContract();
+      const contract = await connectingWithContract();
       const addMessage = await contract.sendMessage(address, msg);
       setLoading(true);
       await addMessage.wait();
@@ -100,19 +100,21 @@ export const ChatAppProvider = ({ children }) => {
   };
 
   const readUser = async (userAddress) => {
-    const contract = await connectWithContract();
+    const contract = await connectingWithContract();
     const userName = await contract.getUsername(userAddress);
     setCurrentUserName(userName);
     setCurrentUserAddress(userAddress);
   };
   return (
     <ChatAppContext.Provider
-      value={{
+      value={[
         readMessage,
         createAccount,
         addFriends,
         sendMessage,
         readUser,
+        connectWallet,
+        CheckIfWalletConnected,
         account,
         userName,
         friendLists,
@@ -122,7 +124,7 @@ export const ChatAppProvider = ({ children }) => {
         error,
         currentUserName,
         currentUserAddress,
-      }}
+      ]}
     >
       {children}
     </ChatAppContext.Provider>
