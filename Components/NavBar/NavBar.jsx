@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ChatAppContext } from "@/Context/ChatAppContext";
 import images from "../../assets/index";
 import Link from "next/link";
+import { Model } from "../Model/Model";
 
 const NavBar = () => {
   const menuItem = [
@@ -34,8 +35,10 @@ const NavBar = () => {
   ];
   const [active, setActive] = useState(2);
   const [open, setOpen] = useState(false);
+  const [openModel, setOpenModel] = useState(false);
 
-  const { account, userName, connectWallet } = useContext(ChatAppContext);
+  const { account, userName, connectWallet, createAccount, error } =
+    useContext(ChatAppContext);
 
   return (
     <div className={Style.NavBar}>
@@ -65,7 +68,7 @@ const NavBar = () => {
           </div>
 
           {/* mobile */}
-          {!open && (
+          {open && (
             <div className={Style.mobile_menu}>
               {menuItem.map((el, i) => (
                 <div
@@ -116,6 +119,21 @@ const NavBar = () => {
           </div>
         </div>
       </div>
+      {openModel && (
+        <div className={Style.modelBox}>
+          <Model
+            openModel={setOpenModel}
+            title="Wellcome to"
+            head="Chat box"
+            info=""
+            smallInfo=""
+            images={images.hero}
+            functionName={createAccount}
+          />
+        </div>
+      )}
+      {/* {error == "" ? "" : <Error error={error} />} */}
+      {error === "" ? null : <p>Error: {"dfjhgj"}</p>}
     </div>
   );
 };
