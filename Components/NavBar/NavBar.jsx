@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ChatAppContext } from "@/Context/ChatAppContext";
 import images from "../../assets/index";
 import Link from "next/link";
-import { Model } from "../Model/Model";
+import { Model, Error } from "../index";
 
 const NavBar = () => {
   const menuItem = [
@@ -13,15 +13,15 @@ const NavBar = () => {
       link: "alluser",
     },
     {
-      menu: "Chat",
+      menu: "CHAT",
       link: "/",
     },
     {
-      menu: "Contact",
+      menu: "CONTACT",
       link: "/",
     },
     {
-      menu: "Setting",
+      menu: "SETTING",
       link: "/",
     },
     {
@@ -52,17 +52,12 @@ const NavBar = () => {
             {menuItem.map((el, i) => (
               <div
                 onClick={() => setActive(i + 1)}
-                key={i}
+                key={i + 1}
                 className={`${Style.NavBar_box_right_menu_item} ${
                   active === i + 1 ? Style.active_btn : ""
                 }`}
               >
-                <Link
-                  className={Style.NavBar_box_right_menu_item_link}
-                  href={el.link}
-                >
-                  {el.menu}
-                </Link>
+                <Link href={el.link}>{el.menu}</Link>
               </div>
             ))}
           </div>
@@ -73,14 +68,12 @@ const NavBar = () => {
               {menuItem.map((el, i) => (
                 <div
                   onClick={() => setActive(i + 1)}
-                  key={i}
+                  key={i + 1}
                   className={`${Style.mobile_menu_item} ${
                     active === i + 1 ? Style.active_btn : ""
                   }`}
                 >
-                  <Link className={Style.mobile_menu_item_link} href={el.link}>
-                    {el.menu}
-                  </Link>
+                  <Link href={el.link}>{el.menu}</Link>
                 </div>
               ))}
               <p className={Style.mobile_menu_btn}>
@@ -119,11 +112,11 @@ const NavBar = () => {
           </div>
         </div>
       </div>
-      {openModel && (
+      {!openModel && (
         <div className={Style.modelBox}>
           <Model
             openBox={setOpenModel}
-            title="Wellcome to"
+            title="Welcome to"
             head="Chat box"
             info=""
             smallInfo=""
@@ -133,8 +126,7 @@ const NavBar = () => {
           />
         </div>
       )}
-      {/* {error == "" ? "" : <Error error={error} />} */}
-      {error === "" ? null : <p>Error: {"dfjhgj"}</p>}
+      {error === "" ? null : <Error error={error} />}
     </div>
   );
 };

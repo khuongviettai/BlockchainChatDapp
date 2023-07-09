@@ -31,39 +31,43 @@ const Model = ({
           <p>{info}</p>
           <small>{smallInfo}</small>
 
-          <div className={Style.Model_box_right_name}>
-            <div className={Style.Model_box_right_name_info}>
-              <Image src={image.username} alt="user" width={30} height={30} />
-              <input
-                type="text"
-                placeholder="your name"
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className={Style.Model_box_right_name_infor}>
-              <Image src={image.account} alt="user" width={30} height={30} />
-              <input
-                type="text"
-                placeholder={address || "Enter address"}
-                onChange={(e) => setAccountAddress(e.target.value)}
-              />
-            </div>
-            <div className={Style.Model_box_right_name_btn}>
-              <button onClick={() => functionName({ name, accountAddress })}>
-                {""}
-                <Image src={image.send} width={30} height={30} />
-                {""}
-                Submit
-              </button>
+          {loading == true ? (
+            <Loader />
+          ) : (
+            <div className={Style.Model_box_right_name}>
+              <div className={Style.Model_box_right_name_info}>
+                <Image src={image.username} alt="user" width={30} height={30} />
+                <input
+                  type="text"
+                  placeholder="your name"
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className={Style.Model_box_right_name_info}>
+                <Image src={image.account} alt="user" width={30} height={30} />
+                <input
+                  type="text"
+                  placeholder={address || "Enter address"}
+                  onChange={(e) => setAccountAddress(e.target.value)}
+                />
+              </div>
+              <div className={Style.Model_box_right_name_btn}>
+                <button onClick={() => functionName({ name, accountAddress })}>
+                  {""}
+                  <Image src={image.send} width={30} height={30} />
+                  {""}
+                  Submit
+                </button>
 
-              <button onClick={() => openBox(false)}>
-                {""}
-                <Image src={image.send} width={30} height={30} />
-                {""}
-                Cancle
-              </button>
+                <button onClick={() => openBox(false)}>
+                  {""}
+                  <Image src={image.send} width={30} height={30} />
+                  {""}
+                  Cancle
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
